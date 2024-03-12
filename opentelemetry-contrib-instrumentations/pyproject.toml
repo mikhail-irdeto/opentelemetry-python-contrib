@@ -62,7 +62,7 @@ dependencies = [
     "opentelemetry-instrumentation-pymongo==0.45b0.dev",
     "opentelemetry-instrumentation-pymysql==0.45b0.dev",
     "opentelemetry-instrumentation-pyramid==0.45b0.dev",
-    "opentelemetry-instrumentation-redis==0.45b0.mk",
+    "opentelemetry-instrumentation-redis==0.45b0.dev+mikhail-irdeto",
     "opentelemetry-instrumentation-remoulade==0.45b0.dev",
     "opentelemetry-instrumentation-requests==0.45b0.dev",
     "opentelemetry-instrumentation-sklearn==0.45b0.dev",
