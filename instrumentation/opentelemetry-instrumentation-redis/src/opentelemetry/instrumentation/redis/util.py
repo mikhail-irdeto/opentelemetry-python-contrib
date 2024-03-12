@@ -48,23 +48,41 @@ def _extract_conn_attributes(conn_kwargs):
     return attributes
 
 
-def _format_command_args(args):
+def _format_command_args(args, disable_sanitize_query):
     """Format and sanitize command arguments, and trim them as needed"""
     cmd_max_len = 1000
     value_too_long_mark = "..."
+    if not disable_sanitize_query:
+        # Sanitized query format: "COMMAND ? ?"
+        args_length = len(args)
+        if args_length > 0:
+            out = [str(args[0])] + ["?"] * (args_length - 1)
+            out_str = " ".join(out)
 
-    # Sanitized query format: "COMMAND ? ?"
-    args_length = len(args)
-    if args_length > 0:
-        out = [str(args[0])] + ["?"] * (args_length - 1)
-        out_str = " ".join(out)
+            if len(out_str) > cmd_max_len:
+                out_str = (
+                    out_str[: cmd_max_len - len(value_too_long_mark)]
+                    + value_too_long_mark
+                )
+        else:
+            out_str = ""
+        return out_str
 
-        if len(out_str) > cmd_max_len:
-            out_str = (
-                out_str[: cmd_max_len - len(value_too_long_mark)]
-                + value_too_long_mark
-            )
-    else:
-        out_str = ""
+    value_max_len = 100
+    length = 0
+    out = []
+    for arg in args:
+        cmd = str(arg)
 
-    return out_str
+        if len(cmd) > value_max_len:
+            cmd = cmd[:value_max_len] + value_too_long_mark
+
+        if length + len(cmd) > cmd_max_len:
+            prefix = cmd[: cmd_max_len - length]
+            out.append(f"{prefix}{value_too_long_mark}")
+            break
+
+        out.append(cmd)
+        length += len(cmd)
+
+    return " ".join(out)
