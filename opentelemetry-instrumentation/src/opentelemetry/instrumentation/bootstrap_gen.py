@@ -142,7 +142,7 @@ libraries = [
     },
     {
         "library": "redis >= 2.6",
-        "instrumentation": "opentelemetry-instrumentation-redis==0.45b0.dev",
+        "instrumentation": "opentelemetry-instrumentation-redis==0.45b0.mk",
     },
     {
         "library": "remoulade >= 0.50",
