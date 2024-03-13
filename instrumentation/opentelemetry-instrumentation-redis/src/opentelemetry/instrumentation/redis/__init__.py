@@ -165,7 +165,7 @@ def _build_span_name(instance, cmd_args):
     return name
 
 
-def _build_span_meta_data_for_pipeline(instance):
+def _build_span_meta_data_for_pipeline(instance, disable_sanitize_query=False):
     try:
         command_stack = (
             instance.command_stack
@@ -174,7 +174,7 @@ def _build_span_meta_data_for_pipeline(instance):
         )
 
         cmds = [
-            _format_command_args(c.args if hasattr(c, "args") else c[0])
+            _format_command_args(c.args if hasattr(c, "args") else c[0], disable_sanitize_query)
             for c in command_stack
         ]
         resource = "\n".join(cmds)
@@ -223,7 +223,7 @@ def _instrument(
             command_stack,
             resource,
             span_name,
-        ) = _build_span_meta_data_for_pipeline(instance)
+        ) = _build_span_meta_data_for_pipeline(instance, disable_sanitize_query)
 
         with tracer.start_as_current_span(
             span_name, kind=trace.SpanKind.CLIENT
@@ -292,7 +292,7 @@ def _instrument(
             command_stack,
             resource,
             span_name,
-        ) = _build_span_meta_data_for_pipeline(instance)
+        ) = _build_span_meta_data_for_pipeline(instance, disable_sanitize_query)
 
         with tracer.start_as_current_span(
             span_name, kind=trace.SpanKind.CLIENT

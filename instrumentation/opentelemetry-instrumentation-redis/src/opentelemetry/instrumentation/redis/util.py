@@ -48,7 +48,7 @@ def _extract_conn_attributes(conn_kwargs):
     return attributes
 
 
-def _format_command_args(args, disable_sanitize_query):
+def _format_command_args(args, disable_sanitize_query=False):
     """Format and sanitize command arguments, and trim them as needed"""
     cmd_max_len = 1000
     value_too_long_mark = "..."
